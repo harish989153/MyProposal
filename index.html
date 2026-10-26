@@ -274,6 +274,28 @@
       padding: 10px 18px;
       font-size: 1rem
     }
+
+    #customPlan {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      min-width: 180px;
+    }
+
+    #customPlan:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 10px rgba(255, 61, 113, 0.5);
+    }
+
+    #customPlan::placeholder {
+      color: rgba(255, 240, 245, 0.6);
+    }
   </style>
 </head>
 
@@ -323,8 +345,7 @@
     <button id="scan">👆 Scan karo</button>
     <div class="bar"><i id="mbar"></i></div>
     <p class="hint" id="mtxt"></p>
-    <div class="card script" id="mres" style="display:none;min-height:0">Pyaar level: 99.9% 💘<br>Error: Harsh ke liye
-      limit cross ho gayi 🚨</div>
+    <div class="card script" id="mres" style="display:none;min-height:0"></div>
     <button id="next5" style="display:none">Ek aakhri sawaal… 🌹</button>
   </section>
 
@@ -335,6 +356,13 @@
     <div class="card" id="menu">
       <div class="script">Date par kya karein? Tum chuno 👇</div>
       <div class="row" id="opts"></div>
+      <div style="margin-top: 18px; border-top: 1px dashed rgba(255,255,255,0.25); padding-top: 14px;">
+        <p class="hint" style="margin: 0 auto 10px; font-size: 0.95rem; color: #ffb3c6;">Ya apna koi mann pasand plan batao… 💭<br><span style="font-size:0.85rem; opacity:0.9;">(Par thoda romantic choose karna, sirf khana nahi 😉💖)</span></p>
+        <div style="display:flex; gap:8px; justify-content:center; max-width:340px; margin:0 auto; flex-wrap:wrap;">
+          <input type="text" id="customPlan" placeholder="Apna romantic plan yahan likho… ✍️" />
+          <button id="customBtn" style="padding:10px 18px; font-size:0.95rem;">Lock karo 🔒</button>
+        </div>
+      </div>
     </div>
     <div class="ticket" id="ticket"></div>
   </section>
@@ -427,13 +455,26 @@
     $('a1').onclick = () => ans(C.askYes);
     $('a2').onclick = () => ans(C.askLess);
     $('next3').onclick = () => show(5);
+
     $('scan').onclick = () => {
-      $('scan').style.display = 'none'; $('mbar').parentElement.style.display = 'block';
-      const m = ["Dil ki dhadkan scan ho rahi hai…", "Pyaar level naap rahe hain…", "Harsh ke liye feelings check ho rahi hain…"]; let p = 0;
+      $('scan').style.display = 'none';
+      $('mbar').parentElement.style.display = 'block';
+      const targetP = Math.floor(Math.random() * (99 - 80 + 1)) + 80;
+      const m = ["Dil ki dhadkan scan ho rahi hai…", "Pyaar level naap rahe hain…", "Harsh ke liye feelings check ho rahi hain…"];
+      let p = 0;
       const t = setInterval(() => {
-        p += 2; $('mbar').style.width = p + '%'; $('mtxt').textContent = m[Math.min(2, Math.floor(p / 34))] + ' ' + p + '%';
-        if (p >= 100) { clearInterval(t); $('mres').style.display = 'block'; $('next5').style.display = 'inline-block'; burst(innerWidth / 2, innerHeight / 2, 100) }
-      }, 60)
+        p += 2;
+        if (p > targetP) p = targetP;
+        $('mbar').style.width = p + '%';
+        $('mtxt').textContent = m[Math.min(2, Math.floor((p / targetP) * 3))] + ' ' + p + '%';
+        if (p >= targetP) {
+          clearInterval(t);
+          $('mres').innerHTML = `Pyaar level: ${targetP}% 💘<br>Warning: Harsh ke liye feelings dangerously high hain! 🚨🥰`;
+          $('mres').style.display = 'block';
+          $('next5').style.display = 'inline-block';
+          burst(innerWidth / 2, innerHeight / 2, 100);
+        }
+      }, 50);
     };
     $('next5').onclick = () => show(4);
 
@@ -460,15 +501,32 @@
       $('menu').style.display = 'block'; no.style.display = 'none';
       for (let i = 0; i < 6; i++)setTimeout(() => burst(Math.random() * innerWidth, innerHeight * .4, 80), i * 400)
     };
-    ["Golgappe 🥟", "Chai ☕", "Maggi 🍜", "Movie 🎬", "Surprise 😏"].forEach(o => {
-      const b = document.createElement('button'); b.textContent = o;
-      b.onclick = () => {
-        $('menu').style.display = 'none'; const t = $('ticket'); t.style.display = 'block';
-        t.innerHTML = `<b>🎟️ ADMIT TWO</b>${C.her} + ${C.me}<br>📅 30-31 October 2026<br>🎯 Plan: ${o}<br>⚠️ Non-refundable 😎<div class="bc"></div><small>Screenshot lekar ${C.me} ko bhej do ✅</small>`;
-        burst(innerWidth / 2, innerHeight / 2, 100)
-      };
-      $('opts').append(b)
+
+    function selectPlan(plan) {
+      $('menu').style.display = 'none';
+      const t = $('ticket');
+      t.style.display = 'block';
+      t.innerHTML = `<b>🎟️ ADMIT TWO</b>${C.her} + ${C.me}<br>📅 30-31 October 2026<br>🎯 Plan: ${plan}<br>⚠️ Non-refundable 😎<div class="bc"></div><small>Screenshot lekar ${C.me} ko bhej do ✅</small>`;
+      burst(innerWidth / 2, innerHeight / 2, 100);
+    }
+
+    ["Golgappe 😋", "Momos 🥟", "Chai ☕", "Maggi 🍜", "Movie 🎬", "Surprise 😏"].forEach(o => {
+      const b = document.createElement('button');
+      b.textContent = o;
+      b.onclick = () => selectPlan(o);
+      $('opts').append(b);
     });
+
+    const handleCustom = () => {
+      const val = $('customPlan').value.trim();
+      if (!val) {
+        $('customPlan').focus();
+        return;
+      }
+      selectPlan(val + ' 💖 (Tumhari Special Choice)');
+    };
+    $('customBtn').onclick = handleCustom;
+    $('customPlan').onkeydown = e => { if (e.key === 'Enter') handleCustom(); };
   </script>
 </body>
 

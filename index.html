@@ -296,6 +296,26 @@
     #customPlan::placeholder {
       color: rgba(255, 240, 245, 0.6);
     }
+
+    .shayari-card {
+      position: relative;
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 24px;
+      padding: 32px 24px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .2), inset 0 0 20px rgba(255, 61, 113, .15);
+    }
+
+    .shayari-card p {
+      font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+      line-height: 1.85;
+      font-weight: 300;
+      color: #fff0f5;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+    }
   </style>
 </head>
 
@@ -326,6 +346,26 @@
   <section id="s2">
     <div class="card script" id="story"></div>
     <button id="next2" style="display:none">Aage… 💌</button>
+  </section>
+
+  <section id="s2b">
+    <h1 style="font-size: clamp(1.8rem, 5vw, 2.8rem);">Sirf tumhare liye… ✨</h1>
+    <div class="shayari-card">
+      <div style="font-size: 2.2rem; line-height: 1; margin-bottom: 12px; opacity: 0.85;">❝</div>
+      <p>
+        Teri kajal bhari aankhon mein kuch raaz sa lagta hai,<br>
+        Tujhe dekhun toh har lamha ek khwaab sa lagta hai. 🌙
+      </p>
+      <div style="margin: 14px 0; height: 1px; background: radial-gradient(circle, rgba(255,61,113,0.6) 0%, transparent 100%);"></div>
+      <p>
+        Kaash likh sakun main teri aankhon ki khoobsurati ko,<br>
+        Par tujhko dekhkar har lafz bhi kam sa lagta hai. 🥹❤️
+      </p>
+      <div style="margin-top: 18px; text-align: right; font-family: 'Dancing Script', cursive; font-size: 1.7rem; color: #ff7a9c;">
+        — Harsh ✍️
+      </div>
+    </div>
+    <button id="next2b">Aage dekho… 💌</button>
   </section>
 
   <section id="s3">
@@ -447,7 +487,8 @@
       }
       $('next2').style.display = 'inline-block'
     }
-    $('next2').onclick = () => show(3);
+    $('next2').onclick = () => { show('2b'); burst(innerWidth / 2, innerHeight * .4, 40); };
+    $('next2b').onclick = () => show(3);
 
     C.reasons.forEach(([e, t]) => { const d = document.createElement('div'); d.className = 'flip'; d.innerHTML = `<div><span>${e}</span><span>${t}</span></div>`; d.onclick = () => { d.classList.toggle('f'); const r = d.getBoundingClientRect(); burst(r.left + 60, r.top + 40, 10) }; $('grid').append(d) });
     $('askQ').textContent = C.askQ;

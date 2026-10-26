@@ -1,175 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Harsh ne tumhare liye kuch banaya hai 💌</title>
-<meta property="og:title" content="Harsh ne tumhare liye kuch banaya hai 💌">
-<meta property="og:description" content="Tap karke dekho… dil par thodi der haath rakhna 💓">
-<meta property="og:type" content="website">
-<meta name="description" content="Sirf tumhare liye ❤">
-<!-- Optional: add a photo preview after hosting: <meta property="og:image" content="https://YOUR-SITE/preview.jpg"> -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-:root{--bg1:#1a0614;--bg2:#4a0e33;--ink:#fff0f5;--rose:#ff3d71;--glass:rgba(255,255,255,.1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#1a0614;--bg2:#4a0e33;--ink:#fff0f5}}
-:root[data-theme="dark"]{--bg1:#1a0614;--bg2:#4a0e33;--ink:#fff0f5}
-*{box-sizing:border-box;margin:0}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{min-height:100vh;background:radial-gradient(circle at 50% 30%,var(--bg2),var(--bg1));color:var(--ink);font-family:'Poppins',system-ui,sans-serif;overflow-x:hidden;text-align:center}
-canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
-section{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:18px}
-section.on{display:flex;animation:fade 1s ease}
-@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-h1,.script{font-family:'Dancing Script',cursive;font-size:clamp(2rem,6vw,3.2rem)}
-.hint{opacity:.8;font-weight:300;max-width:360px}
-#heartWrap{position:relative;width:min(70vw,280px);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
-#heartWrap svg{width:100%;overflow:visible;filter:drop-shadow(0 0 25px var(--rose))}
-#heartFill{transform-origin:50% 55%}
-.pct{font-size:1.4rem;font-weight:600;color:var(--rose);min-height:2rem}
-.card{background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:28px;max-width:440px;width:100%;min-height:150px;font-size:1.5rem;line-height:1.6}
-button{font:inherit;border:0;border-radius:40px;padding:14px 34px;color:#fff;background:linear-gradient(135deg,#ff3d71,#ff7a9c);cursor:pointer;box-shadow:0 0 22px rgba(255,61,113,.6);transition:transform .2s}
-button:hover{transform:scale(1.07)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;max-width:560px;width:100%}
-.flip{height:130px;perspective:700px;cursor:pointer}
-.flip div{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
-.flip.f div{transform:rotateY(180deg)}
-.flip span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px;border-radius:16px;backface-visibility:hidden;background:var(--glass);border:1px solid rgba(255,255,255,.25);font-size:.95rem}
-.flip span:first-child{font-size:2rem}
-.flip span:last-child{transform:rotateY(180deg);background:rgba(255,61,113,.35)}
-.row{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
-#yesMsg{display:none}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Harsh ne tumhare liye kuch banaya hai 💌</title>
+  <meta property="og:title" content="Harsh ne tumhare liye kuch banaya hai 💌">
+  <meta property="og:description" content="Tap karke dekho… dil par thodi der haath rakhna 💓">
+  <meta property="og:type" content="website">
+  <meta name="description" content="Sirf tumhare liye ❤">
+  <!-- Optional: add a photo preview after hosting: <meta property="og:image" content="https://YOUR-SITE/preview.jpg"> -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #1a0614;
+      --bg2: #4a0e33;
+      --ink: #fff0f5;
+      --rose: #ff3d71;
+      --glass: rgba(255, 255, 255, .1);
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg1: #1a0614;
+        --bg2: #4a0e33;
+        --ink: #fff0f5
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg1: #1a0614;
+      --bg2: #4a0e33;
+      --ink: #fff0f5
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px)
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 30%, var(--bg2), var(--bg1));
+      color: var(--ink);
+      font-family: 'Poppins', system-ui, sans-serif;
+      overflow-x: hidden;
+      text-align: center
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      gap: 18px
+    }
+
+    section.on {
+      display: flex;
+      animation: fade 1s ease
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    h1,
+    .script {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 6vw, 3.2rem)
+    }
+
+    .hint {
+      opacity: .8;
+      font-weight: 300;
+      max-width: 360px
+    }
+
+    #heartWrap {
+      position: relative;
+      width: min(70vw, 280px);
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none
+    }
+
+    #heartWrap svg {
+      width: 100%;
+      overflow: visible;
+      filter: drop-shadow(0 0 25px var(--rose))
+    }
+
+    #heartFill {
+      transform-origin: 50% 55%
+    }
+
+    .pct {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--rose);
+      min-height: 2rem
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 440px;
+      width: 100%;
+      min-height: 150px;
+      font-size: 1.5rem;
+      line-height: 1.6
+    }
+
+    button {
+      font: inherit;
+      border: 0;
+      border-radius: 40px;
+      padding: 14px 34px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff3d71, #ff7a9c);
+      cursor: pointer;
+      box-shadow: 0 0 22px rgba(255, 61, 113, .6);
+      transition: transform .2s
+    }
+
+    button:hover {
+      transform: scale(1.07)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      max-width: 560px;
+      width: 100%
+    }
+
+    .flip {
+      height: 130px;
+      perspective: 700px;
+      cursor: pointer
+    }
+
+    .flip div {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform .7s;
+      transform-style: preserve-3d
+    }
+
+    .flip.f div {
+      transform: rotateY(180deg)
+    }
+
+    .flip span {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, .25);
+      font-size: .95rem
+    }
+
+    .flip span:first-child {
+      font-size: 2rem
+    }
+
+    .flip span:last-child {
+      transform: rotateY(180deg);
+      background: rgba(255, 61, 113, .35)
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+
+    #yesMsg {
+      display: none
+    }
+
+    .bar {
+      width: 260px;
+      height: 14px;
+      border-radius: 9px;
+      background: var(--glass);
+      overflow: hidden;
+      display: none
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #ff7a9c, #ff3d71)
+    }
+
+    .ticket {
+      display: none;
+      background: #fff5f8;
+      color: #3a0a24;
+      border: 3px dashed var(--rose);
+      border-radius: 18px;
+      padding: 20px;
+      max-width: 340px;
+      width: 100%;
+      font-size: 1rem;
+      line-height: 1.7;
+      animation: fade 1s
+    }
+
+    .ticket b {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      display: block
+    }
+
+    .ticket .bc {
+      height: 44px;
+      margin-top: 10px;
+      background: repeating-linear-gradient(90deg, #3a0a24 0 2px, #fff5f8 2px 5px, #3a0a24 5px 6px, #fff5f8 6px 10px)
+    }
+
+    #menu {
+      display: none
+    }
+
+    #menu .row {
+      margin-top: 14px
+    }
+
+    #menu button {
+      padding: 10px 18px;
+      font-size: 1rem
+    }
+  </style>
 </head>
+
 <body>
-<canvas id="bg"></canvas><canvas id="fx"></canvas>
+  <canvas id="bg"></canvas><canvas id="fx"></canvas>
 
-<section id="s1" class="on">
-  <h1 id="t1"></h1>
-  <div id="heartWrap">
-    <svg viewBox="0 0 100 90">
-      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a9c"/><stop offset="1" stop-color="#d4145a"/></linearGradient></defs>
-      <path id="heartFill" fill="url(#g)" opacity=".85" d="M50 85C15 58 3 40 3 25 3 12 13 3 26 3c10 0 20 6 24 15C54 9 64 3 74 3c13 0 23 9 23 22 0 15-12 33-47 60z"/>
-      <path id="ring" pathLength="100" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="0 100" d="M50 85C15 58 3 40 3 25 3 12 13 3 26 3c10 0 20 6 24 15C54 9 64 3 74 3c13 0 23 9 23 22 0 15-12 33-47 60z"/>
-    </svg>
-  </div>
-  <div class="pct" id="pct">0%</div>
-  <p class="hint" id="hint"></p>
-</section>
+  <section id="s1" class="on">
+    <h1 id="t1"></h1>
+    <div id="heartWrap">
+      <svg viewBox="0 0 100 90">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff7a9c" />
+            <stop offset="1" stop-color="#d4145a" />
+          </linearGradient>
+        </defs>
+        <path id="heartFill" fill="url(#g)" opacity=".85"
+          d="M50 85C15 58 3 40 3 25 3 12 13 3 26 3c10 0 20 6 24 15C54 9 64 3 74 3c13 0 23 9 23 22 0 15-12 33-47 60z" />
+        <path id="ring" pathLength="100" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+          stroke-dasharray="0 100"
+          d="M50 85C15 58 3 40 3 25 3 12 13 3 26 3c10 0 20 6 24 15C54 9 64 3 74 3c13 0 23 9 23 22 0 15-12 33-47 60z" />
+      </svg>
+    </div>
+    <div class="pct" id="pct">0%</div>
+    <p class="hint" id="hint"></p>
+  </section>
 
-<section id="s2">
-  <div class="card script" id="story"></div>
-  <button id="next2" style="display:none">Aage… 💌</button>
-</section>
+  <section id="s2">
+    <div class="card script" id="story"></div>
+    <button id="next2" style="display:none">Aage… 💌</button>
+  </section>
 
-<section id="s3">
-  <h1>Reasons I love you</h1>
-  <p class="hint">Cards par tap karo 👆</p>
-  <div class="grid" id="grid"></div>
-  <p class="script" id="days"></p>
-  <button id="next3">Ek aakhri sawaal… 🌹</button>
-</section>
+  <section id="s3">
+    <h1>Reasons I love you</h1>
+    <p class="hint">Cards par tap karo 👆</p>
+    <div class="grid" id="grid"></div>
+    <div class="card script" id="ask">
+      <div id="askQ"></div>
+      <div class="row" id="askB"><button id="a1">Haan, bahut 🥺</button><button id="a2">Thoda sa 😏</button></div>
+    </div>
+    <button id="next3">Ek aakhri sawaal… 🌹</button>
+  </section>
 
-<section id="s4">
-  <h1 id="q"></h1>
-  <div class="row" id="btns"><button id="yes">YES 💖</button><button id="no">No 🙈</button></div>
-  <div class="card script" id="yesMsg"></div>
-</section>
+  <section id="s5">
+    <h1>Love Meter 💓</h1>
+    <p class="hint">Neeche button dabao, dekhte hain tumhara pyaar kitna hai 😏</p>
+    <button id="scan">👆 Scan karo</button>
+    <div class="bar"><i id="mbar"></i></div>
+    <p class="hint" id="mtxt"></p>
+    <div class="card script" id="mres" style="display:none;min-height:0">Pyaar level: 99.9% 💘<br>Error: Harsh ke liye
+      limit cross ho gayi 🚨</div>
+    <button id="next5" style="display:none">Ek aakhri sawaal… 🌹</button>
+  </section>
 
-<script>
-/* ===== EDIT ME ===== */
-const C={
-  her:"Pallavi",
-  me:"Harsh",
-  metOn:"2026-10-11",
-  hintText:"Dil par mouse rakho aur 5 second wait karo… mobile par dabaake pakdo 💓",
-  story:[
-    "Hey Pallavi… ek baat bolni thi 💭",
-    "Jab se tum meri zindagi mein aayi ho, sab kuch khoobsurat lagta hai ✨",
-    "Tumhari hasi mere din ki sabse pyari cheez hai 😊",
-    "Isliye aaj dil ki baat keh raha hoon… ❤"
-  ],
-  reasons:[["😊","Tumhari smile"],["🤗","Tumhari care"],["😂","Tumhara pagalpan"],["🌙","Tumhare saath har raat"],["🎶","Humare gaane"],["⏳","Tumhare saath time ruk jata hai"]],
-  question:"Will you come with me on a date on 31st? 🌹",
-  yesText:"Yayyy! 🥰 Mujhe pata tha tum haan bologi. To pakka raha, 31 ko milte hain ❤ Main intezaar karunga!",
-  holdMs:5000
-};
-/* ==================== */
-const $=id=>document.getElementById(id);
-const show=n=>{document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on')};
-$('t1').textContent="Hey "+C.her+", ye sirf tumhare liye ❤";
-$('hint').textContent=C.hintText;
+  <section id="s4">
+    <h1 id="q"></h1>
+    <div class="row" id="btns"><button id="yes">YES 💖</button><button id="no">No 🙈</button></div>
+    <div class="card script" id="yesMsg"></div>
+    <div class="card" id="menu">
+      <div class="script">Date par kya karein? Tum chuno 👇</div>
+      <div class="row" id="opts"></div>
+    </div>
+    <div class="ticket" id="ticket"></div>
+  </section>
 
-const bg=$('bg'),bx=bg.getContext('2d'),fx=$('fx'),fc=fx.getContext('2d');let W,H,P=[];
-function rs(){W=bg.width=fx.width=innerWidth;H=bg.height=fx.height=innerHeight}
-rs();addEventListener('resize',rs);
-for(let i=0;i<35;i++)P.push({x:Math.random()*W,y:Math.random()*H,s:10+Math.random()*22,v:.3+Math.random()*.8,a:.1+Math.random()*.3});
-let F=[];
-function burst(x,y,n=60){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=3+Math.random()*7;F.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-3,t:'❤💖💕✨🌸'[Math.floor(Math.random()*5)],z:14+Math.random()*16,l:1})}}
-addEventListener('pointermove',e=>{if(Math.random()<.5)F.push({x:e.clientX,y:e.clientY,vx:Math.random()-.5,vy:-1-Math.random(),t:'💗',z:10,l:.8})});
-function loop(){
-  bx.clearRect(0,0,W,H);
-  P.forEach(p=>{p.y-=p.v;if(p.y<-30){p.y=H+30;p.x=Math.random()*W}bx.globalAlpha=p.a;bx.font=p.s+'px serif';bx.fillText('❤',p.x,p.y)});
-  fc.clearRect(0,0,W,H);
-  F=F.filter(f=>f.l>0);
-  F.forEach(f=>{f.x+=f.vx;f.y+=f.vy;f.vy+=.12;f.l-=.012;fc.globalAlpha=Math.max(f.l,0);fc.font=f.z+'px serif';fc.fillText(f.t,f.x,f.y)});
-  requestAnimationFrame(loop)}
-loop();
+  <script>
+    /* ===== EDIT ME ===== */
+    const C = {
+      her: "Pallavi",
+      me: "Harsh",
+      metOn: "2026-10-11",
+      hintText: "Dil par mouse rakho aur 5 second wait karo… mobile par dabaake pakdo 💓",
+      story: [
+        "Hey Pallavi… ek baat bolni thi 💭",
+        "Jab se tum meri zindagi mein aayi ho, sab kuch khoobsurat lagta hai ✨",
+        "Tumhari hasi mere din ki sabse pyari cheez hai 😊",
+        "Jab tak tumse poora din baat nahi hoti, ye din adhura lagta hai aur dil nahi lagta 🥺",
+        "Isliye aaj dil ki baat keh raha hoon… ❤"
+      ],
+      reasons: [["😊", "Tumhari smile"], ["🤗", "Tumhari care"], ["😂", "Tumhara pagalpan"], ["🌙", "Tumhare saath har raat"], ["🎶", "Humare gaane"], ["⏳", "Tumhare saath time ruk jata hai"]],
+      askQ: "Pallavi, sach batana… kya tumhe bhi mere bina din adhura lagta hai? 🥺",
+      askYes: "Mujhe pata tha 🥹 Tum bhi bilkul meri tarah ho ❤",
+      askLess: "Sirf thoda sa? 😤 Koi baat nahi, 30-31 tak main tumhe poora yakeen dila dunga 😘",
+      question: "Will you join me on 30-31st and enjoy with me? 🌹",
+      yesText: "Yayyy! 🥰 Mujhe pata tha tum haan bologi. To pakka raha, 30-31 ko saath mein khoob masti karenge ❤ Main intezaar karunga!",
+      holdMs: 5000
+    };
+    /* ==================== */
+    const $ = id => document.getElementById(id);
+    const show = n => { document.querySelectorAll('section').forEach(s => s.classList.remove('on')); $('s' + n).classList.add('on') };
+    $('t1').textContent = "Hey " + C.her + ", ye sirf tumhare liye ❤";
+    $('hint').textContent = C.hintText;
 
-let ac;function thump(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=60;g.gain.setValueAtTime(.35,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.2);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+.2)}catch(e){}}
+    const bg = $('bg'), bx = bg.getContext('2d'), fx = $('fx'), fc = fx.getContext('2d'); let W, H, P = [];
+    function rs() { W = bg.width = fx.width = innerWidth; H = bg.height = fx.height = innerHeight }
+    rs(); addEventListener('resize', rs);
+    for (let i = 0; i < 35; i++)P.push({ x: Math.random() * W, y: Math.random() * H, s: 10 + Math.random() * 22, v: .3 + Math.random() * .8, a: .1 + Math.random() * .3 });
+    let F = [];
+    function burst(x, y, n = 60) { for (let i = 0; i < n; i++) { const a = Math.random() * 6.28, s = 3 + Math.random() * 7; F.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 3, t: '❤💖💕✨🌸'[Math.floor(Math.random() * 5)], z: 14 + Math.random() * 16, l: 1 }) } }
+    addEventListener('pointermove', e => { if (Math.random() < .5) F.push({ x: e.clientX, y: e.clientY, vx: Math.random() - .5, vy: -1 - Math.random(), t: '💗', z: 10, l: .8 }) });
+    function loop() {
+      bx.clearRect(0, 0, W, H);
+      P.forEach(p => { p.y -= p.v; if (p.y < -30) { p.y = H + 30; p.x = Math.random() * W } bx.globalAlpha = p.a; bx.font = p.s + 'px serif'; bx.fillText('❤', p.x, p.y) });
+      fc.clearRect(0, 0, W, H);
+      F = F.filter(f => f.l > 0);
+      F.forEach(f => { f.x += f.vx; f.y += f.vy; f.vy += .12; f.l -= .012; fc.globalAlpha = Math.max(f.l, 0); fc.font = f.z + 'px serif'; fc.fillText(f.t, f.x, f.y) });
+      requestAnimationFrame(loop)
+    }
+    loop();
 
-let prog=0,active=false,done=false,last=performance.now(),beat=0;
-const hw=$('heartWrap');
-hw.addEventListener('pointerenter',()=>active=true);
-hw.addEventListener('pointerleave',()=>active=false);
-hw.addEventListener('pointerdown',()=>active=true);
-addEventListener('pointerup',e=>{if(e.pointerType!=='mouse')active=false});
-function tick(now){
-  if(done)return;
-  const dt=now-last;last=now;
-  prog=active?Math.min(1,prog+dt/C.holdMs):Math.max(0,prog-dt/2500);
-  const sp=1+prog*5,inc=dt/1000*sp*1.4,old=beat;beat+=inc;
-  const sc=1+Math.abs(Math.sin(beat*Math.PI))*(.05+prog*.18);
-  const sh=active?Math.sin(now/30)*prog*4:0;
-  $('heartFill').style.transform=`scale(${sc})`;
-  hw.style.transform=`translateX(${sh}px) rotate(${sh/2}deg)`;
-  $('ring').setAttribute('stroke-dasharray',`${prog*100} 100`);
-  $('pct').textContent=Math.round(prog*100)+'%';
-  if(active&&Math.floor(beat)!==Math.floor(old)){thump();if(prog>.5){const r=hw.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,4)}}
-  if(prog>=1){done=true;openIt();return}
-  requestAnimationFrame(tick)}
-requestAnimationFrame(tick);
-function openIt(){const r=hw.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,120);setTimeout(()=>{show(2);typeStory()},900)}
+    let ac; function thump() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = 60; g.gain.setValueAtTime(.35, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + .2); o.connect(g).connect(ac.destination); o.start(); o.stop(ac.currentTime + .2) } catch (e) { } }
 
-async function typeStory(){
-  const el=$('story');
-  for(const line of C.story){
-    el.textContent='';
-    for(const ch of Array.from(line)){el.textContent+=ch;await new Promise(r=>setTimeout(r,55))}
-    await new Promise(r=>setTimeout(r,1500))}
-  $('next2').style.display='inline-block'}
-$('next2').onclick=()=>show(3);
+    let prog = 0, active = false, done = false, last = performance.now(), beat = 0;
+    const hw = $('heartWrap');
+    hw.addEventListener('pointerenter', () => active = true);
+    hw.addEventListener('pointerleave', () => active = false);
+    hw.addEventListener('pointerdown', () => active = true);
+    addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') active = false });
+    function tick(now) {
+      if (done) return;
+      const dt = now - last; last = now;
+      prog = active ? Math.min(1, prog + dt / C.holdMs) : Math.max(0, prog - dt / 2500);
+      const sp = 1 + prog * 5, inc = dt / 1000 * sp * 1.4, old = beat; beat += inc;
+      const sc = 1 + Math.abs(Math.sin(beat * Math.PI)) * (.05 + prog * .18);
+      const sh = active ? Math.sin(now / 30) * prog * 4 : 0;
+      $('heartFill').style.transform = `scale(${sc})`;
+      hw.style.transform = `translateX(${sh}px) rotate(${sh / 2}deg)`;
+      $('ring').setAttribute('stroke-dasharray', `${prog * 100} 100`);
+      $('pct').textContent = Math.round(prog * 100) + '%';
+      if (active && Math.floor(beat) !== Math.floor(old)) { thump(); if (prog > .5) { const r = hw.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 4) } }
+      if (prog >= 1) { done = true; openIt(); return }
+      requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick);
+    function openIt() { const r = hw.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 120); setTimeout(() => { show(2); typeStory() }, 900) }
 
-C.reasons.forEach(([e,t])=>{const d=document.createElement('div');d.className='flip';d.innerHTML=`<div><span>${e}</span><span>${t}</span></div>`;d.onclick=()=>{d.classList.toggle('f');const r=d.getBoundingClientRect();burst(r.left+60,r.top+40,10)};$('grid').append(d)});
-const dd=Math.max(0,Math.floor((Date.now()-new Date(C.metOn))/864e5));
-$('days').textContent=`Humein mile ${dd} din ho gaye 💞`;
-$('next3').onclick=()=>show(4);
+    async function typeStory() {
+      const el = $('story');
+      for (const line of C.story) {
+        el.textContent = '';
+        for (const ch of Array.from(line)) { el.textContent += ch; await new Promise(r => setTimeout(r, 55)) }
+        await new Promise(r => setTimeout(r, 1500))
+      }
+      $('next2').style.display = 'inline-block'
+    }
+    $('next2').onclick = () => show(3);
 
-$('q').textContent=C.question;
-const no=$('no');let moved=0;const nos=["Are you sure? 🥺","Soch lo ek baar 😢","Please… 🥹","Dil toot jayega 💔","Bas YES bolo 😤"];
-function dodge(){
-  no.style.position='fixed';
-  no.style.left=Math.random()*(innerWidth-130)+'px';
-  no.style.top=Math.random()*(innerHeight-60)+'px';
-  no.textContent=nos[moved++%nos.length];
-  $('yes').style.transform=`scale(${Math.min(2.2,1+moved*.12)})`}
-no.addEventListener('pointerenter',dodge);
-no.addEventListener('pointerdown',e=>{e.preventDefault();dodge()});
-$('yes').onclick=()=>{
-  $('btns').style.display='none';$('q').textContent="She said YES! 🎉";
-  $('yesMsg').style.display='block';$('yesMsg').textContent=C.yesText+"  — "+C.me;
-  no.style.display='none';
-  for(let i=0;i<6;i++)setTimeout(()=>burst(Math.random()*innerWidth,innerHeight*.4,80),i*400)};
-</script>
+    C.reasons.forEach(([e, t]) => { const d = document.createElement('div'); d.className = 'flip'; d.innerHTML = `<div><span>${e}</span><span>${t}</span></div>`; d.onclick = () => { d.classList.toggle('f'); const r = d.getBoundingClientRect(); burst(r.left + 60, r.top + 40, 10) }; $('grid').append(d) });
+    $('askQ').textContent = C.askQ;
+    function ans(t) { $('askB').style.display = 'none'; $('askQ').textContent = t; const r = $('ask').getBoundingClientRect(); for (let i = 0; i < 4; i++)setTimeout(() => burst(r.left + Math.random() * r.width, r.top + r.height / 2, 30), i * 250) }
+    $('a1').onclick = () => ans(C.askYes);
+    $('a2').onclick = () => ans(C.askLess);
+    $('next3').onclick = () => show(5);
+    $('scan').onclick = () => {
+      $('scan').style.display = 'none'; $('mbar').parentElement.style.display = 'block';
+      const m = ["Dil ki dhadkan scan ho rahi hai…", "Pyaar level naap rahe hain…", "Harsh ke liye feelings check ho rahi hain…"]; let p = 0;
+      const t = setInterval(() => {
+        p += 2; $('mbar').style.width = p + '%'; $('mtxt').textContent = m[Math.min(2, Math.floor(p / 34))] + ' ' + p + '%';
+        if (p >= 100) { clearInterval(t); $('mres').style.display = 'block'; $('next5').style.display = 'inline-block'; burst(innerWidth / 2, innerHeight / 2, 100) }
+      }, 60)
+    };
+    $('next5').onclick = () => show(4);
+
+    $('q').textContent = C.question;
+    const no = $('no'); let moved = 0; const nos = ["Are you sure? 🥺", "Soch lo ek baar 😢", "Please… 🥹", "Dil toot jayega 💔", "Bas YES bolo 😤"];
+    const onEnter = () => dodge(), onDown = e => { e.preventDefault(); dodge() };
+    function dodge() {
+      if (moved >= 5) {
+        no.removeEventListener('pointerenter', onEnter); no.removeEventListener('pointerdown', onDown);
+        no.style.position = 'static'; no.textContent = 'Error 404: "No" not found 🚫';
+        setTimeout(() => { no.textContent = 'YES 💖'; no.onclick = () => $('yes').click() }, 1600); return
+      }
+      no.style.position = 'fixed';
+      no.style.left = Math.random() * (innerWidth - 130) + 'px';
+      no.style.top = Math.random() * (innerHeight - 60) + 'px';
+      no.textContent = nos[moved++ % nos.length];
+      $('yes').style.transform = `scale(${Math.min(2.2, 1 + moved * .12)})`
+    }
+    no.addEventListener('pointerenter', onEnter);
+    no.addEventListener('pointerdown', onDown);
+    $('yes').onclick = () => {
+      $('btns').style.display = 'none'; $('q').textContent = "She said YES! 🎉";
+      $('yesMsg').style.display = 'block'; $('yesMsg').textContent = C.yesText + "  — " + C.me;
+      $('menu').style.display = 'block'; no.style.display = 'none';
+      for (let i = 0; i < 6; i++)setTimeout(() => burst(Math.random() * innerWidth, innerHeight * .4, 80), i * 400)
+    };
+    ["Golgappe 🥟", "Chai ☕", "Maggi 🍜", "Movie 🎬", "Surprise 😏"].forEach(o => {
+      const b = document.createElement('button'); b.textContent = o;
+      b.onclick = () => {
+        $('menu').style.display = 'none'; const t = $('ticket'); t.style.display = 'block';
+        t.innerHTML = `<b>🎟️ ADMIT TWO</b>${C.her} + ${C.me}<br>📅 30-31 October 2026<br>🎯 Plan: ${o}<br>⚠️ Non-refundable 😎<div class="bc"></div><small>Screenshot lekar ${C.me} ko bhej do ✅</small>`;
+        burst(innerWidth / 2, innerHeight / 2, 100)
+      };
+      $('opts').append(b)
+    });
+  </script>
 </body>
+
 </html>

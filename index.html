@@ -272,7 +272,26 @@
 
     #menu button {
       padding: 10px 18px;
-      font-size: 1rem
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    #menu .opt-btn.selected {
+      background: #ffffff !important;
+      color: #ff3d71 !important;
+      box-shadow: 0 0 22px rgba(255, 255, 255, 0.95), 0 0 14px #ff3d71 !important;
+      transform: scale(1.08);
+      font-weight: 600;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .shake {
+      animation: shake 0.4s ease;
     }
 
     #customPlan {
@@ -504,15 +523,25 @@
     <div class="row" id="btns"><button id="yes">YES 💖</button><button id="no">No 🙈</button></div>
     <div class="card script" id="yesMsg"></div>
     <div class="card" id="menu">
-      <div class="script">Date par kya karein? Tum chuno 👇</div>
-      <div class="row" id="opts"></div>
+      <div class="script" style="font-size: 1.85rem;">Date par kya karein? Tum chuno 👇</div>
+      <p style="font-size: 0.88rem; opacity: 0.85; margin: 4px 0 0;">(Dono steps mandatory hain 💖)</p>
+
+      <div style="margin-top: 12px;">
+        <span style="font-size: 0.95rem; color: #ffb3c6; font-weight: 600;">1️⃣ Treat chuno 😋:</span>
+        <div class="row" id="opts"></div>
+      </div>
+
       <div style="margin-top: 18px; border-top: 1px dashed rgba(255,255,255,0.25); padding-top: 14px;">
-        <p class="hint" style="margin: 0 auto 10px; font-size: 0.95rem; color: #ffb3c6;">Ya apna koi mann pasand plan batao… 💭<br><span style="font-size:0.85rem; opacity:0.9;">(Par thoda romantic choose karna, sirf khana nahi 😉💖)</span></p>
+        <span style="font-size: 0.95rem; color: #ffb3c6; font-weight: 600;">2️⃣ Romantic plan batao 💭:</span>
+        <p class="hint" style="margin: 4px auto 10px; font-size: 0.85rem; color: #ffb3c6;">
+          (Thoda romantic plan likhna, sirf khana nahi 😉💖)
+        </p>
         <div style="display:flex; gap:8px; justify-content:center; max-width:340px; margin:0 auto; flex-wrap:wrap;">
           <input type="text" id="customPlan" placeholder="Apna romantic plan yahan likho… ✍️" />
           <button id="customBtn" style="padding:10px 18px; font-size:0.95rem;">Lock karo 🔒</button>
         </div>
       </div>
+      <div id="planWarn" style="min-height: 22px; font-size: 0.92rem; color: #ffd1dc; margin-top: 10px; font-weight: 500; transition: all 0.3s;"></div>
     </div>
     <div class="ticket" id="ticket"></div>
   </section>
@@ -687,28 +716,70 @@
       for (let i = 0; i < 6; i++)setTimeout(() => burst(Math.random() * innerWidth, innerHeight * .4, 80), i * 400)
     };
 
-    function selectPlan(plan) {
-      $('menu').style.display = 'none';
-      const t = $('ticket');
-      t.style.display = 'block';
-      t.innerHTML = `<b>🎟️ ADMIT TWO</b>${C.her} + ${C.me}<br>📅 30-31 October 2026<br>🎯 Plan: ${plan}<br>⚠️ Non-refundable 😎<div class="bc"></div><small>Screenshot lekar ${C.me} ko bhej do ✅</small>`;
-      burst(innerWidth / 2, innerHeight / 2, 100);
-    }
+    const treats = ["Golgappe 😋", "Momos 🥟", "Chai ☕", "Maggi 🍜", "Movie 🎬", "Surprise 😏"];
+    let selectedTreats = [];
 
-    ["Golgappe 😋", "Momos 🥟", "Chai ☕", "Maggi 🍜", "Movie 🎬", "Surprise 😏"].forEach(o => {
+    treats.forEach(o => {
       const b = document.createElement('button');
+      b.className = 'opt-btn';
       b.textContent = o;
-      b.onclick = () => selectPlan(o);
+      b.onclick = () => {
+        const idx = selectedTreats.indexOf(o);
+        if (idx > -1) {
+          selectedTreats.splice(idx, 1);
+          b.classList.remove('selected');
+        } else {
+          selectedTreats.push(o);
+          b.classList.add('selected');
+          const r = b.getBoundingClientRect();
+          burst(r.left + r.width / 2, r.top + r.height / 2, 18);
+          chime(650);
+        }
+        const warn = $('planWarn');
+        if (warn) {
+          if (selectedTreats.length > 0 && !$('customPlan').value.trim()) {
+            warn.textContent = "Great! Ab step 2 mein romantic plan bhi likho… ✍️💖";
+          } else {
+            warn.textContent = "";
+          }
+        }
+      };
       $('opts').append(b);
     });
 
+    function triggerShake(el) {
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+      setTimeout(() => el.classList.remove('shake'), 450);
+    }
+
     const handleCustom = () => {
+      const warn = $('planWarn');
       const val = $('customPlan').value.trim();
-      if (!val) {
-        $('customPlan').focus();
+
+      if (selectedTreats.length === 0) {
+        warn.textContent = "⚠️ Pehle Step 1 se treat chuno! (Dono mandatory hain 😋)";
+        triggerShake($('opts'));
+        chime(350);
         return;
       }
-      selectPlan(val + ' 💖 (Tumhari Special Choice)');
+
+      if (!val) {
+        warn.textContent = "⚠️ Step 2: Romantic plan likhna zaroori hai! (Sirf khana nahi 😉💖)";
+        triggerShake($('customPlan'));
+        $('customPlan').focus();
+        chime(350);
+        return;
+      }
+
+      warn.textContent = "";
+      $('menu').style.display = 'none';
+      const t = $('ticket');
+      t.style.display = 'block';
+      t.innerHTML = `<b>🎟️ ADMIT TWO</b>${C.her} + ${C.me}<br>📅 30-31 October 2026<br>🍽️ Treat: ${selectedTreats.join(', ')}<br>💖 Romantic Plan: ${val}<br>⚠️ Non-refundable & Sealed with Love 😎<div class="bc"></div><small>Screenshot lekar ${C.me} ko bhej do ✅</small>`;
+      burst(innerWidth / 2, innerHeight / 2, 120);
+      chime(800);
     };
     $('customBtn').onclick = handleCustom;
     $('customPlan').onkeydown = e => { if (e.key === 'Enter') handleCustom(); };

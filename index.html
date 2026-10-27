@@ -316,6 +316,84 @@
       color: #fff0f5;
       text-shadow: 0 2px 8px rgba(0, 0, 0, .3);
     }
+
+    .polaroids {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(12px, 3vw, 24px);
+      max-width: 680px;
+      width: 100%;
+      margin: 10px auto;
+      perspective: 1000px;
+      flex-wrap: wrap;
+    }
+
+    .polaroid {
+      background: #ffffff;
+      padding: clamp(8px, 1.8vw, 12px) clamp(8px, 1.8vw, 12px) clamp(10px, 2.2vw, 16px);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 61, 113, 0.2);
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      width: clamp(100px, 28vw, 175px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .polaroid:nth-child(1) {
+      transform: rotate(-4deg);
+    }
+
+    .polaroid:nth-child(2) {
+      transform: rotate(1deg);
+    }
+
+    .polaroid:nth-child(3) {
+      transform: rotate(4deg);
+    }
+
+    .polaroid:hover,
+    .polaroid.tapped {
+      transform: scale(1.1) rotate(0deg) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 61, 113, 0.65);
+      z-index: 10;
+    }
+
+    .polaroid-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #f5f5f5;
+    }
+
+    .polaroid-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .polaroid:hover .polaroid-img,
+    .polaroid.tapped .polaroid-img {
+      transform: scale(1.06);
+    }
+
+    .polaroid-caption {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.05rem, 3.2vw, 1.35rem);
+      font-weight: 600;
+      margin-top: clamp(6px, 1.5vw, 10px);
+      color: #2e081e;
+      text-align: center;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
@@ -366,6 +444,38 @@
       </div>
     </div>
     <button id="next2b">Aage dekho… 💌</button>
+  </section>
+
+  <section id="s2c">
+    <h1 style="font-size: clamp(2rem, 6vw, 3.2rem);">Meri favourite cheez 📸</h1>
+    <p class="hint" style="margin-top: -6px;">Photos par tap karo 👆</p>
+    
+    <div class="polaroids">
+      <div class="polaroid" id="p1" data-reaction="Uff ye smile! 😍 Kitni pyaari lag rahi ho!">
+        <div class="polaroid-img-wrap">
+          <img src="images/photo1.jpg" alt="Ye smile" class="polaroid-img" />
+        </div>
+        <div class="polaroid-caption">Ye smile 😊</div>
+      </div>
+
+      <div class="polaroid" id="p2" data-reaction="Haye ye nazar! 🥹 Seedha dil par asar karti hai!">
+        <div class="polaroid-img-wrap">
+          <img src="images/photo2.jpg" alt="Aur ye nazar" class="polaroid-img" />
+        </div>
+        <div class="polaroid-caption">Aur ye nazar 🥺</div>
+      </div>
+
+      <div class="polaroid" id="p3" data-reaction="Sabse zyada pyaari! 🥰 Meri sabse favourite!">
+        <div class="polaroid-img-wrap">
+          <img src="images/photo3.jpg" alt="Sabse pyaari" class="polaroid-img" />
+        </div>
+        <div class="polaroid-caption">Sabse pyaari 🥰</div>
+      </div>
+    </div>
+
+    <div id="photoToast" style="min-height: 28px; font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #ff9ebb; transition: opacity 0.3s; opacity: 0;"></div>
+
+    <button id="next2c">Aage… 💌</button>
   </section>
 
   <section id="s3">
@@ -487,8 +597,42 @@
       }
       $('next2').style.display = 'inline-block'
     }
+    function chime(freq = 550) {
+      try {
+        ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, ac.currentTime);
+        o.frequency.exponentialRampToValueAtTime(freq * 1.35, ac.currentTime + .22);
+        g.gain.setValueAtTime(.25, ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + .32);
+        o.connect(g).connect(ac.destination);
+        o.start();
+        o.stop(ac.currentTime + .32);
+      } catch (e) { }
+    }
+
     $('next2').onclick = () => { show('2b'); burst(innerWidth / 2, innerHeight * .4, 40); };
-    $('next2b').onclick = () => show(3);
+    $('next2b').onclick = () => { show('2c'); burst(innerWidth / 2, innerHeight * .4, 40); };
+    $('next2c').onclick = () => { show(3); burst(innerWidth / 2, innerHeight * .4, 40); };
+
+    let toastTimer;
+    document.querySelectorAll('.polaroid').forEach(p => {
+      p.onclick = () => {
+        p.classList.add('tapped');
+        setTimeout(() => p.classList.remove('tapped'), 550);
+        const r = p.getBoundingClientRect();
+        burst(r.left + r.width / 2, r.top + r.height / 2, 25);
+        chime(580 + Math.random() * 220);
+        const toast = $('photoToast');
+        if (toast && p.dataset.reaction) {
+          toast.textContent = p.dataset.reaction;
+          toast.style.opacity = '1';
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => { toast.style.opacity = '0'; }, 2400);
+        }
+      };
+    });
 
     C.reasons.forEach(([e, t]) => { const d = document.createElement('div'); d.className = 'flip'; d.innerHTML = `<div><span>${e}</span><span>${t}</span></div>`; d.onclick = () => { d.classList.toggle('f'); const r = d.getBoundingClientRect(); burst(r.left + 60, r.top + 40, 10) }; $('grid').append(d) });
     $('askQ').textContent = C.askQ;
